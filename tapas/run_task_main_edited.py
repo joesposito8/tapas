@@ -488,15 +488,16 @@ def _predict_sequence_for_set(
       add_answer=use_answer_as_supervision)
   result = exp_prediction_utils.compute_prediction_sequence(
       estimator=estimator, examples_by_position=examples_by_position)
-  result_array = np.zeros((4,5))
   for query in result:
+    num_rows = max(query['row_ids'])
+    result_array = np.zeros((num_rows,FLAGS.num_columns))
     for i in range(1, FLAGS.max_seq_length):
       if (query['segment_ids'][i] == 1) and (not (query['row_ids'][i-1] == query['row_ids'][i]) or not (query['column_ids'][i-1] == query['column_ids'][i])):
         row = query['row_ids'][i]
         column = column_order[query['column_ids'][i]-1]
         prob = query['probabilities'][i]
         print(f'({row}, {column}): {prob}')
-        result_array[row][query['column_ids'][i]-1] = prob
+        result_array[row-1][query['column_ids'][i]-1] = prob
   print(result_array)
   exp_prediction_utils.write_predictions(
       result,
