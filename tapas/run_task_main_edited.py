@@ -47,7 +47,7 @@ FLAGS = flags.FLAGS
 
 flags.DEFINE_integer('num_columns', 8, 'Number of columns in predictive table.')
 
-flags.DEFINE_list('column_order', [x+1 for x in range(FLAGS.num_columns)],
+flags.DEFINE_list('column_order', [x+1 for x in range(8)],
                     'Order of the columns in the predictive table')
 
 flags.DEFINE_string('input_dir', None,
@@ -494,11 +494,10 @@ def _predict_sequence_for_set(
     for i in range(1, FLAGS.max_seq_length):
       if (query['segment_ids'][i] == 1) and (not (query['row_ids'][i-1] == query['row_ids'][i]) or not (query['column_ids'][i-1] == query['column_ids'][i])):
         row = query['row_ids'][i]
-        column = column_order[query['column_ids'][i]-1]
+        column = FLAGS.column_order[query['column_ids'][i]-1]
         prob = query['probabilities'][i]
-        print(f'({row}, {column}): {prob}')
         result_array[row-1][query['column_ids'][i]-1] = prob
-  print(result_array)
+    print(result_array)
   exp_prediction_utils.write_predictions(
       result,
       prediction_file,
@@ -550,7 +549,7 @@ def main(argv):
   mode = Mode[FLAGS.mode.upper()]
   _check_options(output_dir, task, mode)
 
-  elif mode in (Mode.PREDICT_AND_EVALUATE, Mode.PREDICT):
+  if mode in (Mode.PREDICT_AND_EVALUATE, Mode.PREDICT):
     _print('Training or predicting ...')
     tpu_options = TpuOptions(
         use_tpu=FLAGS.use_tpu,
