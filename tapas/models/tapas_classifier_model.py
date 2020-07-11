@@ -974,10 +974,7 @@ def model_fn_builder(config):
          column_ids=column_ids,
          classification_class_index=classification_class_index)
 
-    print(logits)
-    print(logits_aggregation)
-    print(probabilities)
-    print(logits_cls)
+    print(model.get_pooled_output())
 
     tvars = tf.trainable_variables()
     initialized_variable_names = {}
