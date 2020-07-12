@@ -976,6 +976,8 @@ def model_fn_builder(config):
 
     print(type(model.get_pooled_output()))
     print(dir(model.get_pooled_output()))
+    print(model.get_pooled_output().shape)
+    print(model.get_pooled_output().eval())
 
     tvars = tf.trainable_variables()
     initialized_variable_names = {}
