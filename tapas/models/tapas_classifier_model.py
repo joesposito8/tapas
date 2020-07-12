@@ -974,7 +974,7 @@ def model_fn_builder(config):
          column_ids=column_ids,
          classification_class_index=classification_class_index)
 
-    print(model.get_pooled_output())
+    print(model.get_pooled_output().numpy())
 
     tvars = tf.trainable_variables()
     initialized_variable_names = {}
