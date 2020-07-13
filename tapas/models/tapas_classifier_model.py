@@ -705,6 +705,8 @@ def _get_classification_outputs(config,
 
   # TODO(pawelnow): Extract this into a function.
   # Compute aggregation function logits.
+  print(output_layer_aggregation)
+  print(output_layer_aggregation.eval())
   do_model_aggregation = config.num_aggregation_labels > 0
   if do_model_aggregation:
     hidden_size_agg = output_layer_aggregation.shape[-1].value
@@ -973,11 +975,6 @@ def model_fn_builder(config):
          row_ids=row_ids,
          column_ids=column_ids,
          classification_class_index=classification_class_index)
-
-    print(type(model.get_pooled_output()))
-    print(dir(model.get_pooled_output()))
-    print(model.get_pooled_output().shape)
-    print(model.get_pooled_output().eval())
 
     tvars = tf.trainable_variables()
     initialized_variable_names = {}
