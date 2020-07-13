@@ -706,8 +706,8 @@ def _get_classification_outputs(config,
   # TODO(pawelnow): Extract this into a function.
   # Compute aggregation function logits.
   print(output_layer_aggregation)
-  sess=tf.InteractiveSession
-  print(output_layer_aggregation.eval())
+  with tf.Session() as sess:
+      print(output_layer_aggregation.eval())
   do_model_aggregation = config.num_aggregation_labels > 0
   if do_model_aggregation:
     hidden_size_agg = output_layer_aggregation.shape[-1].value
