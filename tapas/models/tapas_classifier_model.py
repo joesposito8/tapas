@@ -457,8 +457,15 @@ def compute_token_logits(output_layer, temperature,
       if init_cell_selection_weights_to_zero else _classification_initializer())
   output_bias = tf.get_variable(
       "output_bias", shape=(), initializer=tf.zeros_initializer())
+  print(output_bias)
+  print(output_weights)
   logits = (tf.einsum("bsj,j->bs", output_layer, output_weights) +
             output_bias) / temperature
+  print(logits)
+  with tf.Session as sess:
+      print(output_bias.eval())
+      print(output_weights.eval())
+      print(logits.eval())
   return logits
 
 
@@ -706,7 +713,6 @@ def _get_classification_outputs(config,
   # TODO(pawelnow): Extract this into a function.
   # Compute aggregation function logits.
   do_model_aggregation = config.num_aggregation_labels > 0
-  print(do_model_aggregation)
   if do_model_aggregation:
     hidden_size_agg = output_layer_aggregation.shape[-1].value
     output_weights_agg = tf.get_variable(
@@ -717,11 +723,6 @@ def _get_classification_outputs(config,
         "output_bias_agg",
         shape=[config.num_aggregation_labels],
         initializer=tf.zeros_initializer())
-    with tf.Session() as sess:
-        print(output_weight_agg)
-        print(output_bias_agg)
-        print(output_weight_agg.eval())
-        print(output_bias_agg.eval())
 
   do_model_classification = config.num_classification_labels > 0
   logits_cls = None
