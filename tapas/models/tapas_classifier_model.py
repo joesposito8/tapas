@@ -706,6 +706,7 @@ def _get_classification_outputs(config,
   # TODO(pawelnow): Extract this into a function.
   # Compute aggregation function logits.
   do_model_aggregation = config.num_aggregation_labels > 0
+  print(do_model_aggregation)
   if do_model_aggregation:
     hidden_size_agg = output_layer_aggregation.shape[-1].value
     output_weights_agg = tf.get_variable(
@@ -836,6 +837,8 @@ def _get_classification_outputs(config,
         per_example_additional_loss *= large_answer_loss_mask
 
       total_loss += tf.reduce_mean(per_example_additional_loss)
+
+      print(output_layer_aggregation)
 
     return (total_loss, logits, logits_aggregation,
             _get_probs(dist_per_token) * input_mask_float, logits_cls)
