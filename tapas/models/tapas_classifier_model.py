@@ -838,7 +838,7 @@ def _get_classification_outputs(config,
 
       total_loss += tf.reduce_mean(per_example_additional_loss)
 
-      print(output_layer_aggregation)
+    print(output_layer_aggregation)
 
     return (total_loss, logits, logits_aggregation,
             _get_probs(dist_per_token) * input_mask_float, logits_cls)
