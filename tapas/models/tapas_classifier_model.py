@@ -462,6 +462,10 @@ def compute_token_logits(output_layer, temperature,
   logits = (tf.einsum("bsj,j->bs", output_layer, output_weights) +
             output_bias) / temperature
   print(logits)
+  with tf.Session() as sess:
+      print(output_bias.eval())
+      print(output_weights.eval())
+      print(logits.eval())
   return logits
 
 
@@ -834,8 +838,6 @@ def _get_classification_outputs(config,
         per_example_additional_loss *= large_answer_loss_mask
 
       total_loss += tf.reduce_mean(per_example_additional_loss)
-
-    print(output_layer_aggregation)
 
     return (total_loss, logits, logits_aggregation,
             _get_probs(dist_per_token) * input_mask_float, logits_cls)
