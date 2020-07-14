@@ -30,6 +30,8 @@ from tapas.models.bert import table_bert
 import tensorflow.compat.v1 as tf
 import tensorflow_probability as tfp
 
+tf.enable_eager_execution()
+
 
 _EPSILON_ZERO_DIVISION = 1e-10
 _CLOSE_ENOUGH_TO_LOG_ZERO = -10000.0
@@ -459,6 +461,12 @@ def compute_token_logits(output_layer, temperature,
       "output_bias", shape=(), initializer=tf.zeros_initializer())
   logits = (tf.einsum("bsj,j->bs", output_layer, output_weights) +
             output_bias) / temperature
+
+  print(output_layer)
+  print(type(output_weights))
+
+  with tf.Session() as sess:
+      print(sess.run(output_bias))
 
   ol_iterator = output_weights.make_initializable_iterator()
   with tf.Session() as sess:
