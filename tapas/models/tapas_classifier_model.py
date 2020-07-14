@@ -457,16 +457,11 @@ def compute_token_logits(output_layer, temperature,
       if init_cell_selection_weights_to_zero else _classification_initializer())
   output_bias = tf.get_variable(
       "output_bias", shape=(), initializer=tf.zeros_initializer())
-  print(output_bias)
-  print(output_weights)
   logits = (tf.einsum("bsj,j->bs", output_layer, output_weights) +
             output_bias) / temperature
-  print(logits)
   with tf.Session() as sess:
       sess.run(tf.global_variables_initializer())
-      print(sess.run(output_bias))
-      print(sess.run(output_weights))
-      print(sess.run(logits))
+      print(sess.run(output_layer))
   return logits
 
 
