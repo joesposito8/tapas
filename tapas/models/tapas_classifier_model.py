@@ -464,9 +464,9 @@ def compute_token_logits(output_layer, temperature,
   print(logits)
   with tf.Session() as sess:
       sess.run(tf.global_variables_initializer())
-      print(output_bias.eval())
-      print(output_weights.eval())
-      print(logits.eval())
+      print(sess.run(output_bias))
+      print(sess.run(output_weights))
+      print(sess.run(logits))
   return logits
 
 
