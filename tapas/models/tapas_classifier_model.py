@@ -466,15 +466,15 @@ def compute_token_logits(output_layer, temperature,
       sess.run(tf.global_variables_initializer())
       print(sess.run(output_weights))
 
-  ol_iterator = output_weights.make_initializable_iterator()
+  with tf.Session() as sess:
+      print(sess.run(output_layer))
+
+  ol_iterator = output_layer.make_initializable_iterator()
   with tf.Session() as sess:
       sess.run(tf.global_variables_initializer())
       sess.run(ol_iterator.initializer)
       for i in range(10):
           print(sess.run(ol_iterator.get_next()))
-
-  with tf.Session() as sess:
-      print(sess.run(output_layer))
 
   return logits
 
