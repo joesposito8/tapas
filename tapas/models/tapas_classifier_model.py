@@ -462,12 +462,9 @@ def compute_token_logits(output_layer, temperature,
   logits = (tf.einsum("bsj,j->bs", output_layer, output_weights) +
             output_bias) / temperature
 
-  print(output_layer)
-  print(type(output_weights))
-
   with tf.Session() as sess:
       sess.run(tf.global_variables_initializer())
-      print(sess.run(output_bias))
+      print(sess.run(output_weights))
 
   ol_iterator = output_weights.make_initializable_iterator()
   with tf.Session() as sess:
