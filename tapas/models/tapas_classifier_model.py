@@ -462,6 +462,7 @@ def compute_token_logits(output_layer, temperature,
   logits = (tf.einsum("bsj,j->bs", output_layer, output_weights) +
             output_bias) / temperature
 
+  """
   with tf.Session() as sess:
       sess.run(tf.global_variables_initializer())
       print(sess.run(output_weights))
@@ -474,6 +475,7 @@ def compute_token_logits(output_layer, temperature,
       sess.run(ol_iterator.initializer)
       for i in range(10):
           print(sess.run(ol_iterator.get_next()))
+  """
 
   return logits
 
@@ -989,6 +991,13 @@ def model_fn_builder(config):
          row_ids=row_ids,
          column_ids=column_ids,
          classification_class_index=classification_class_index)
+
+    ola = model.get_pooled_output()
+    ol = model.get_sequence_output()
+    print(type(ola))
+    print(type(ol))
+    print(ola)
+    print(ol)
 
     tvars = tf.trainable_variables()
     initialized_variable_names = {}
