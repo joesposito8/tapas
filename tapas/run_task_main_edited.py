@@ -489,6 +489,8 @@ def _predict_sequence_for_set(
   result = exp_prediction_utils.compute_prediction_sequence(
       estimator=estimator, examples_by_position=examples_by_position)
 
+  print(result)
+
   for query in result:
     num_rows = max(query['row_ids'])
     result_array = np.zeros((num_rows,FLAGS.num_columns))
@@ -498,7 +500,7 @@ def _predict_sequence_for_set(
             current_cell_embedding = [query['embeddings'][i]]
             row = query['row_ids'][i]
             column = FLAGS.column_order[query['column_ids'][i]-1]
-            while (query['row_ids'][i+1] == query['row_ids'][i]) and (query['column_ids'][i+1] == query['column_ids'][i])):
+            while (query['row_ids'][i+1] == query['row_ids'][i]) and (query['column_ids'][i+1] == query['column_ids'][i]):
                 i += 1
                 current_cell_embedding.append(query['embeddings'][i])
         result_array[row-1][query['column_ids'][i]-1] = current_cell_embedding
