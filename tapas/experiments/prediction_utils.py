@@ -109,6 +109,7 @@ def compute_prediction_sequence(estimator, examples_by_position):
 
     results = list(
         estimator.predict(input_fn=_get_in_memory_input_fn(examples.values())))
+    print(results)
     all_results.extend(results)
 
     prev_answers = {}

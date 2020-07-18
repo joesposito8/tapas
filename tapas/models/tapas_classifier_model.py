@@ -992,15 +992,6 @@ def model_fn_builder(config):
          column_ids=column_ids,
          classification_class_index=classification_class_index)
 
-    ola = model.get_pooled_output()
-    ol = model.get_sequence_output()
-    print(type(ola))
-    print(type(ol))
-    print(ola)
-    print(ol)
-    print(logits)
-    print(probabilities)
-
     tvars = tf.trainable_variables()
     initialized_variable_names = {}
     scaffold_fn = None
@@ -1055,6 +1046,7 @@ def model_fn_builder(config):
           scaffold_fn=scaffold_fn)
     else:
       predictions = {
+          #"embeddings": model.get_pooled_output(),
           "probabilities": probabilities,
           "column_ids": features["column_ids"],
           "row_ids": features["row_ids"],
