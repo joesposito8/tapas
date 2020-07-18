@@ -462,6 +462,10 @@ def compute_token_logits(output_layer, temperature,
   logits = (tf.einsum("bsj,j->bs", output_layer, output_weights) +
             output_bias) / temperature
 
+  with tf.Session() as sess:
+      sess.run(tf.global_variables_initializer())
+      print(sess.run(logits))
+
   """
   with tf.Session() as sess:
       sess.run(tf.global_variables_initializer())
