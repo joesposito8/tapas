@@ -1046,7 +1046,7 @@ def model_fn_builder(config):
           scaffold_fn=scaffold_fn)
     else:
       predictions = {
-          "embeddings": model.get_pooled_output(),
+          "embeddings": model.get_sequence_output(),
           "probabilities": probabilities,
           "column_ids": features["column_ids"],
           "row_ids": features["row_ids"],
