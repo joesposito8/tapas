@@ -494,22 +494,6 @@ def _predict_sequence_for_set(
   for query in result:
     num_rows = max(query['row_ids'])
     result_array = np.zeros((num_rows,FLAGS.num_columns))
-    i = 0
-    while i < FLAGS.max_seq_length:
-        if (query['segment_ids'][i] == 1):
-            current_cell_embedding = [query['embeddings'][i]]
-            row = query['row_ids'][i]
-            column = FLAGS.column_order[query['column_ids'][i]-1]
-            while (query['row_ids'][i+1] == query['row_ids'][i]) and (query['column_ids'][i+1] == query['column_ids'][i]):
-                i += 1
-                current_cell_embedding.append(query['embeddings'][i])
-        result_array[row-1][query['column_ids'][i]-1] = current_cell_embedding
-        i += 1
-    print(result_array)
-
-  for query in result:
-    num_rows = max(query['row_ids'])
-    result_array = np.zeros((num_rows,FLAGS.num_columns))
     for i in range(1, FLAGS.max_seq_length):
       if (query['segment_ids'][i] == 1) and (not (query['row_ids'][i-1] == query['row_ids'][i]) or not (query['column_ids'][i-1] == query['column_ids'][i])):
         row = query['row_ids'][i]
