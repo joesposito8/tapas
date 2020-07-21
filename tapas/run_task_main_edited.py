@@ -507,6 +507,8 @@ def _predict_sequence_for_set(
       f.write(str(result_array))
       f.close()
 
+  print(result)
+
   if (FLAGS.write_embed_table):
     for query in result:
       len_embedding = len(query['embeddings'][0])
