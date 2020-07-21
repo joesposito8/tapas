@@ -524,6 +524,9 @@ def _predict_sequence_for_set(
           embed_array[row][column] += query['embeddings'][i]
           num_array[row][column] += 1
         elif (query['segment_ids'][i] == 1):
+          print(row)
+          print(column)
+          print(query['embeddings'][i])
           embed_array[row][column] += query['embeddings'][i]
           num_array[row][column] += 1
       result_array = [embed/num for (embed_row, num_row) in zip(embed_array,num_array) for (embed, num) in zip(embed_row, num_row)]
