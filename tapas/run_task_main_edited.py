@@ -521,6 +521,9 @@ def _predict_sequence_for_set(
         if (query['segment_ids'][i] == 1) and not (row == query['row_ids'][i] and column == FLAGS.column_order[query['column_ids'][i]-1]):
           row = query['row_ids'][i]
           column = FLAGS.column_order[query['column_ids'][i]-1]
+          print(row)
+          print(column)
+          print(query['embeddings'][i])
           embed_array[row][column] += query['embeddings'][i]
           num_array[row][column] += 1
         elif (query['segment_ids'][i] == 1):
