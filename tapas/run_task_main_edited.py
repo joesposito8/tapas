@@ -523,7 +523,7 @@ def _predict_sequence_for_set(
         elif (query['segment_ids'][i] == 1):
           embed_array[row][column] += query['embeddings'][i]
           num_array[row][column] += 1
-    result_array = [embed/num for (a_row, b_row) in zip(a,b) for (embed, num) in zip(a_row, b_row)]
+    result_array = [embed/num for (embed_row, num_row) in zip(embed_array,num_array) for (embed, num) in zip(embed_row, num_row)]
     f = open(f'{FLAGS.output_dir}/embeds.txt', 'w')
     f.write(str(result_array))
     f.close()
