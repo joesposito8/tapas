@@ -489,8 +489,6 @@ def _predict_sequence_for_set(
   result = exp_prediction_utils.compute_prediction_sequence(
       estimator=estimator, examples_by_position=examples_by_position)
 
-  print(result)
-
   for query in result:
     num_rows = max(query['row_ids'])
     result_array = np.zeros((num_rows,FLAGS.num_columns))
@@ -501,6 +499,8 @@ def _predict_sequence_for_set(
         prob = query['probabilities'][i]
         result_array[row-1][query['column_ids'][i]-1] = prob
     print(result_array)
+
+  # Write embeddings to a file
 
   exp_prediction_utils.write_predictions(
       result,
