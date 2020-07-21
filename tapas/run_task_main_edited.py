@@ -52,6 +52,8 @@ flags.DEFINE_list('column_order', [x+1 for x in range(8)],
 
 flags.DEFINE_bool('write_prob_table', False, 'Whether to print probability table.')
 
+flags.DEFINE_bool('write_embed_table', False, 'Whether to print embeddings table.')
+
 flags.DEFINE_string('input_dir', None,
                     'Directory where original shared task data is read from.')
 flags.DEFINE_string('output_dir', None,
@@ -501,12 +503,11 @@ def _predict_sequence_for_set(
           column = FLAGS.column_order[query['column_ids'][i]-1]
           prob = query['probabilities'][i]
           result_array[row-1][query['column_ids'][i]-1] = prob
+      f = open(f'{FLAGS.output_dir}/probs.txt', 'w')
+      f.write(result_array)
+      f.close()
 
-    f = open(f'{FLAGS.output_dir}/probs.txt', 'w')
-    f.write(result_array)
-    f.close()
-
-  if (FLAGS.write_embeddings):
+  if (FLAGS.write_embed_table):
     print("write embeddings")
 
   # Write embeddings to a file
