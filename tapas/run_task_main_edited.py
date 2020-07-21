@@ -523,14 +523,14 @@ def _predict_sequence_for_set(
           column = FLAGS.column_order[query['column_ids'][i]-1]
           print(row)
           print(column)
-          print(query['embeddings'][i])
-          embed_array[row][column] += query['embeddings'][i]
+          print(type(query['embeddings'][i]))
+          embed_array[row][column] += np.array(query['embeddings'][i])
           num_array[row][column] += 1
         elif (query['segment_ids'][i] == 1):
           print(row)
           print(column)
           print(query['embeddings'][i])
-          embed_array[row][column] += query['embeddings'][i]
+          embed_array[row][column] += np.array(query['embeddings'][i])
           num_array[row][column] += 1
       result_array = [embed/num for (embed_row, num_row) in zip(embed_array,num_array) for (embed, num) in zip(embed_row, num_row)]
       f = open(f'{FLAGS.output_dir}/embeds.txt', 'w')
