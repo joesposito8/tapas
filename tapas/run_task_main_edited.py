@@ -508,7 +508,25 @@ def _predict_sequence_for_set(
       f.close()
 
   if (FLAGS.write_embed_table):
-    print("write embeddings")
+    for query in result:
+      num_rows = max(query['row_ids'])
+      embed_array = np.zeros((num_rows,FLAGS.num_columns, len_embedding))
+      num_array = np.zeros((num_rows,FLAGS.num_columns))
+      row = 0
+      column = 0
+      for i in range(1, FLAGS.max_seq_length):
+        if (query['segment_ids'][i] == 1) and not (row == query['row_ids'][i] and column == FLAGS.column_order[query['column_ids'][i]-1]):
+          row = query['row_ids'][i]
+          column = FLAGS.column_order[query['column_ids'][i]-1]
+          embed_array[row][column] += query['embeddings'][i]
+          num_array[row][column] += 1
+        elif (query['segment_ids'][i] == 1):
+          embed_array[row][column] += query['embeddings'][i]
+          num_array[row][column] += 1
+    result_array = [embed/num for (a_row, b_row) in zip(a,b) for (embed, num) in zip(a_row, b_row)]
+    f = open(f'{FLAGS.output_dir}/embeds.txt', 'w')
+    f.write(str(result_array))
+    f.close()
 
   # Write embeddings to a file
 
