@@ -504,7 +504,7 @@ def _predict_sequence_for_set(
           prob = query['probabilities'][i]
           result_array[row-1][query['column_ids'][i]-1] = prob
       f = open(f'{FLAGS.output_dir}/probs.txt', 'w')
-      f.write(result_array)
+      f.write(str(result_array))
       f.close()
 
   if (FLAGS.write_embed_table):
