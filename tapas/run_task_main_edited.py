@@ -518,9 +518,9 @@ def _predict_sequence_for_set(
       row = 0
       column = 0
       for i in range(1, FLAGS.max_seq_length):
-        if (query['segment_ids'][i] == 1) and not (row == query['row_ids'][i] and column == int(FLAGS.column_order[query['column_ids'][i]-1])):
-          row = query['row_ids'][i]
-          column = int(FLAGS.column_order[query['column_ids'][i]-1])
+        if (query['segment_ids'][i] == 1) and not (row == query['row_ids'][i]-1 and column == int(FLAGS.column_order[query['column_ids'][i]-1])-1):
+          row = query['row_ids'][i]-1
+          column = int(FLAGS.column_order[query['column_ids'][i]-1])-1
           embed_array[row][column] += np.array(query['embeddings'][i])
           num_array[row][column] += 1
         elif (query['segment_ids'][i] == 1):
