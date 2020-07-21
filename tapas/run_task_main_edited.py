@@ -509,6 +509,7 @@ def _predict_sequence_for_set(
 
   if (FLAGS.write_embed_table):
     for query in result:
+      len_embedding = len(query['embeddings'][0])
       num_rows = max(query['row_ids'])
       embed_array = np.zeros((num_rows,FLAGS.num_columns, len_embedding))
       num_array = np.zeros((num_rows,FLAGS.num_columns))
