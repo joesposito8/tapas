@@ -526,10 +526,8 @@ def _predict_sequence_for_set(
         elif (query['segment_ids'][i] == 1):
           embed_array[row][column] += np.array(query['embeddings'][i])
           num_array[row][column] += 1
-      result_array = [embed/num for (embed_row, num_row) in zip(embed_array,num_array) for (embed, num) in zip(embed_row, num_row)]
-      f = open(f'{FLAGS.output_dir}/embeds.txt', 'w')
-      f.write(str(result_array))
-      f.close()
+      result_array = np.array([embed/num for (embed_row, num_row) in zip(embed_array,num_array) for (embed, num) in zip(embed_row, num_row)])
+      np.savetxt(f'{FLAGS.output_dir}/embeds.csv', result_array, delimiter=',')
 
   # Write embeddings to a file
 
