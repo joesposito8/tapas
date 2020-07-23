@@ -503,7 +503,7 @@ def _predict_sequence_for_set(
           column = FLAGS.column_order[query['column_ids'][i]-1]
           prob = query['probabilities'][i]
           result_array[row-1][query['column_ids'][i]-1] = prob
-      np.save(f'{FLAGS.output_dir}/probs.npy', result_array, delimiter=',')
+      np.save(f'{FLAGS.output_dir}/probs.npy', result_array)
 
   if (FLAGS.write_embed_table):
     for query in result:
@@ -523,8 +523,7 @@ def _predict_sequence_for_set(
           embed_array[row][column] += np.array(query['embeddings'][i])
           num_array[row][column] += 1
       result_array = np.array([embed/num for (embed_row, num_row) in zip(embed_array,num_array) for (embed, num) in zip(embed_row, num_row)])
-
-      np.save(f'{FLAGS.output_dir}/embeds.npy', result_array, delimiter=',')
+      np.save(f'{FLAGS.output_dir}/embeds.npy', result_array)
 
   exp_prediction_utils.write_predictions(
       result,
