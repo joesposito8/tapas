@@ -503,9 +503,7 @@ def _predict_sequence_for_set(
           column = FLAGS.column_order[query['column_ids'][i]-1]
           prob = query['probabilities'][i]
           result_array[row-1][query['column_ids'][i]-1] = prob
-      f = open(f'{FLAGS.output_dir}/probs.txt', 'w')
-      f.write(str(result_array))
-      f.close()
+      np.savetxt(f'{FLAGS.output_dir}/probs.csv', result_array, delimiter=',')
 
   if (FLAGS.write_embed_table):
     for query in result:
@@ -526,8 +524,6 @@ def _predict_sequence_for_set(
           num_array[row][column] += 1
       result_array = np.array([embed/num for (embed_row, num_row) in zip(embed_array,num_array) for (embed, num) in zip(embed_row, num_row)])
       np.savetxt(f'{FLAGS.output_dir}/embeds.csv', result_array, delimiter=',')
-
-  # Write embeddings to a file
 
   exp_prediction_utils.write_predictions(
       result,
