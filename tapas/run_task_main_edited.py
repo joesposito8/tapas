@@ -503,7 +503,8 @@ def _predict_sequence_for_set(
           column = FLAGS.column_order[query['column_ids'][i]-1]
           prob = query['probabilities'][i]
           result_array[row-1][query['column_ids'][i]-1] = prob
-      np.save(f'{FLAGS.output_dir}/probs.npy', result_array)
+      prob_array = np.concatenate((np.load(f'{FLAGS.output_dir}/probs.npy'), result_array))
+      np.save(f'{FLAGS.output_dir}/probs.npy', prob_array)
 
   if (FLAGS.write_embed_table):
     for query in result:
