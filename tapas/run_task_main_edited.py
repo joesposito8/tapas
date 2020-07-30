@@ -514,6 +514,8 @@ def _predict_sequence_for_set(
       num_array = np.zeros((num_rows,FLAGS.num_columns))
       row = 0
       column = 0
+      for i in range(512):
+          print(query['row_ids'][i], query['column_ids'][i], query['embeddings'][i])
       for i in range(1, FLAGS.max_seq_length):
         if (query['segment_ids'][i] == 1) and not (row == query['row_ids'][i]-1 and column == int(FLAGS.column_order[query['column_ids'][i]-1])-1):
           row = query['row_ids'][i]-1
