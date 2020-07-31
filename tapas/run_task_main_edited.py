@@ -508,20 +508,19 @@ def _predict_sequence_for_set(
 
   if (FLAGS.write_embed_table):
     for query in result:
-      print(query)
       len_embedding = len(query['embeddings'][0])
       num_rows = max(query['row_ids'])
       embed_array = np.zeros((num_rows,FLAGS.num_columns, len_embedding))
       num_array = np.zeros((num_rows,FLAGS.num_columns))
       row = 0
       column = 0
-      query_array = []
+      query_array = np.zeros(len_embedding)
       query_array_num = 0
       for i in range(1, FLAGS.max_seq_length):
-        #if (query['segment_ids'][i] == 0):
-            #if (query['position_ids'])
-            #query_array.append(np.array(query['embeddings'][i]))
-            #quer
+        if (query['segment_ids'][i] == 0):
+            if (i != 0) and (query['segement_ids'][i+1] != 1):
+                query_array += np.array(query['embeddings'][i])
+                query_array_num += 1
         if (query['segment_ids'][i] == 1) and not (row == query['row_ids'][i]-1 and column == int(FLAGS.column_order[query['column_ids'][i]-1])-1):
           row = query['row_ids'][i]-1
           column = int(FLAGS.column_order[query['column_ids'][i]-1])-1
@@ -530,7 +529,11 @@ def _predict_sequence_for_set(
         elif (query['segment_ids'][i] == 1):
           embed_array[row][column] += np.array(query['embeddings'][i])
           num_array[row][column] += 1
+      print(query_array_num)
+      print(query)
+      query_array = query_array/query_array_num
       result_array = np.array([embed/num for (embed_row, num_row) in zip(embed_array,num_array) for (embed, num) in zip(embed_row, num_row)])
+      np.save(f'{FLAGS.output_dir}/query.npy', query_array)
       np.save(f'{FLAGS.output_dir}/embeds.npy', result_array)
 
   exp_prediction_utils.write_predictions(
