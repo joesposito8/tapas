@@ -508,15 +508,20 @@ def _predict_sequence_for_set(
 
   if (FLAGS.write_embed_table):
     for query in result:
+      print(query)
       len_embedding = len(query['embeddings'][0])
       num_rows = max(query['row_ids'])
       embed_array = np.zeros((num_rows,FLAGS.num_columns, len_embedding))
       num_array = np.zeros((num_rows,FLAGS.num_columns))
       row = 0
       column = 0
-      for i in range(512):
-          print(query['row_ids'][i], query['column_ids'][i], query['embeddings'][i])
+      query_array = []
+      query_array_num = 0
       for i in range(1, FLAGS.max_seq_length):
+        #if (query['segment_ids'][i] == 0):
+            #if (query['position_ids'])
+            #query_array.append(np.array(query['embeddings'][i]))
+            #quer
         if (query['segment_ids'][i] == 1) and not (row == query['row_ids'][i]-1 and column == int(FLAGS.column_order[query['column_ids'][i]-1])-1):
           row = query['row_ids'][i]-1
           column = int(FLAGS.column_order[query['column_ids'][i]-1])-1
