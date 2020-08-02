@@ -516,17 +516,21 @@ def _predict_sequence_for_set(
       column = 0
       query_array = np.zeros(len_embedding)
       query_array_num = 0
+      at_beginning = True
+
       for i in range(1, FLAGS.max_seq_length):
-        if (query['segment_ids'][i] == 0):
-            if (i != 0) and (i != FLAGS.max_seq_length-1) and (query['segment_ids'][i+1] != 1):
-                query_array += np.array(query['embeddings'][i])
-                query_array_num += 1
+        if (query['segment_ids'][i] == 0) and (at_beginning):
+          if (i != 0) and (query['segment_ids'][i+1] != 1):
+            query_array += np.array(query['embeddings'][i])
+            query_array_num += 1
         if (query['segment_ids'][i] == 1) and not (row == query['row_ids'][i]-1 and column == int(FLAGS.column_order[query['column_ids'][i]-1])-1):
+          at_beginning = False
           row = query['row_ids'][i]-1
           column = int(FLAGS.column_order[query['column_ids'][i]-1])-1
           embed_array[row][column] += np.array(query['embeddings'][i])
           num_array[row][column] += 1
         elif (query['segment_ids'][i] == 1):
+          at_beginning = False
           embed_array[row][column] += np.array(query['embeddings'][i])
           num_array[row][column] += 1
       print(query_array_num)
